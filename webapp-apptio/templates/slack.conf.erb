@@ -1,0 +1,17 @@
+URL="" # Slack Webhook URL
+
+PAYLOAD="{
+  \"attachments\": [
+    {
+      \"title\": \"WebApp HTTPD was restartedi by monit\",
+      \"color\": \"warning\",
+      \"mrkdwn_in\": [\"text\"],
+      \"fields\": [
+        { \"title\": \"Date\", \"value\": \"$MONIT_DATE\", \"short\": true },
+        { \"title\": \"Host\", \"value\": \"$MONIT_HOST\", \"short\": true }
+      ]
+    }
+  ]
+}"
+
+curl -s -X POST --data-urlencode "payload=$PAYLOAD" $URL

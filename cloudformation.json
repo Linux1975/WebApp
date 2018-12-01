@@ -1,0 +1,272 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Mappings": {
+    "Region2Principal": {
+      "us-east-1": {
+        "EC2Principal": "ec2.amazonaws.com",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com"
+      },
+      "us-west-2": {
+        "EC2Principal": "ec2.amazonaws.com",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com"
+      },
+      "us-west-1": {
+        "EC2Principal": "ec2.amazonaws.com",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com"
+      },
+      "eu-west-1": {
+        "EC2Principal": "ec2.amazonaws.com",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com"
+      },
+      "ap-southeast-1": {
+        "EC2Principal": "ec2.amazonaws.com",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com"
+      },
+      "ap-northeast-1": {
+        "EC2Principal": "ec2.amazonaws.com",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com"
+      },
+      "ap-northeast-2": {
+        "EC2Principal": "ec2.amazonaws.com",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com"
+      },
+      "ap-southeast-2": {
+        "EC2Principal": "ec2.amazonaws.com",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com"
+      },
+      "sa-east-1": {
+        "EC2Principal": "ec2.amazonaws.com",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com"
+      },
+      "cn-north-1": {
+        "EC2Principal": "ec2.amazonaws.com.cn",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com.cn"
+      },
+      "eu-central-1": {
+        "EC2Principal": "ec2.amazonaws.com",
+        "OpsWorksPrincipal": "opsworks.amazonaws.com"
+      }
+    }
+  },
+  "Parameters": {
+    "EC2KeyPairName": {
+	  "Type": "String",
+	  "Description": "The name of an existing EC2 key pair that lets you use SSH to connect to the OpsWorks instance."
+	 }
+  },
+  "Resources": {
+	"CPOpsDeploySecGroup": {
+	  "Type": "AWS::EC2::SecurityGroup",
+	  "Properties": {
+	    "GroupDescription" : "Lets you manage OpsWorks instances to which you deploy apps with CodePipeline"
+	  }
+	},
+	"CPOpsDeploySecGroupIngressHTTP": {
+	  "Type": "AWS::EC2::SecurityGroupIngress",
+	  "Properties" : {
+	    "IpProtocol" : "tcp",
+        "FromPort" : "80",
+        "ToPort" : "80",
+        "CidrIp" : "0.0.0.0/0",
+		"GroupId": {
+		  "Fn::GetAtt": [
+		    "CPOpsDeploySecGroup", "GroupId"
+		  ]
+		}
+      }
+	},
+	"CPOpsDeploySecGroupIngressSSH": {
+	  "Type": "AWS::EC2::SecurityGroupIngress",
+	  "Properties" : {
+	    "IpProtocol" : "tcp",
+        "FromPort" : "22",
+        "ToPort" : "22",
+        "CidrIp" : "0.0.0.0/0",
+		"GroupId": {
+		  "Fn::GetAtt": [
+		    "CPOpsDeploySecGroup", "GroupId"
+		  ]
+		}
+	  }
+	},
+	"MyStack": {
+      "Type": "AWS::OpsWorks::Stack",
+      "Properties": {
+        "Name": {
+          "Ref": "AWS::StackName"
+        },
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "OpsWorksServiceRole",
+            "Arn"
+          ]
+        },
+		"ConfigurationManager" : { "Name": "Chef","Version": "12" },
+		"DefaultOs": "Amazon Linux 2017.09",
+        "DefaultInstanceProfileArn": {
+          "Fn::GetAtt": [
+            "OpsWorksInstanceProfile",
+            "Arn"
+          ]
+        },
+		"UseCustomCookbooks": "false"
+      }
+    },
+    "MyLayer": {
+      "Type": "AWS::OpsWorks::Layer",
+      "Properties": {
+        "StackId": {
+          "Ref": "MyStack"
+        },
+        "Name": "WeApp Server",
+		"Type": "custom",
+        "Shortname": "app1",
+		"EnableAutoHealing": "true",
+        "AutoAssignElasticIps": "false",
+        "AutoAssignPublicIps": "true",
+		"CustomSecurityGroupIds": [
+		  {
+		    "Fn::GetAtt": [
+              "CPOpsDeploySecGroup", "GroupId"
+		    ]
+		  }
+		 ]
+      },
+      "DependsOn": [
+        "MyStack",
+        "CPOpsDeploySecGroup"
+      ]
+    },
+    "OpsWorksServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  {
+                    "Fn::FindInMap": [
+                      "Region2Principal",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "OpsWorksPrincipal"
+                    ]
+                  }
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "opsworks-service",
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ec2:*",
+                    "iam:PassRole",
+                    "cloudwatch:GetMetricStatistics",
+                    "elasticloadbalancing:*"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "OpsWorksInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [
+          {
+            "Ref": "OpsWorksInstanceRole"
+          }
+        ]
+      }
+    },
+    "OpsWorksInstanceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  {
+                    "Fn::FindInMap": [
+                      "Region2Principal",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "EC2Principal"
+                    ]
+                  }
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+		"Policies": [
+          {
+            "PolicyName": "s3-get",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:GetObject"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "myinstance": {
+      "Type": "AWS::OpsWorks::Instance",
+      "Properties": {
+        "LayerIds": [
+          {
+            "Ref": "MyLayer"
+          }
+        ],
+        "StackId": {
+          "Ref": "MyStack"
+        },
+        "InstanceType": "t2.small",
+        "RootDeviceType": "ebs",
+        "SshKeyName": {
+		  "Ref": "EC2KeyPairName"
+		}
+      }
+    }
+  },
+  "Outputs": {
+    "StackId": {
+      "Description": "Stack ID for the newly created AWS OpsWorks stack",
+      "Value": {
+        "Ref": "MyStack"
+      }
+    }
+  }
+}

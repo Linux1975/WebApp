@@ -1,0 +1,16 @@
+set daemon 60
+set mailserver localhost
+set eventqueue
+basedir /var/monit
+slots 100
+set logfile syslog
+Include /etc/monit.d/*.monitrc
+set httpd port 2812 and use the address localhost
+allow localhost
+
+check process apache with pidfile /var/run/httpd/httpd.pid
+start program = "/etc/init.d/httpd start" with timeout 30 seconds
+stop program  = "/etc/init.d/httpd stop
+
+if changed pid then exec "/bin/bash -c 'PROCESS=Apache /etc/monit.d/slack.sh'"
+if 1 restart within 1 cycle then exec "/bin/bash -c 'PROCESS=Apache /etc/monit.d/slack.sh'"
