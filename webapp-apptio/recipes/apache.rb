@@ -11,6 +11,7 @@ bash 'setup-apache-yum' do
     wget https://s3-us-west-2.amazonaws.com/techops-interview-webapp/webapp.tar.gz #create an S3 bucket in my account with public and dist folder
     tar xvzf webapp.tar.gz
     cp -p public/s* /var/www/html/
+    cp -p public/index.html /var/www/html/
     service httpd start
     chkconfig httpd on
     EOH
