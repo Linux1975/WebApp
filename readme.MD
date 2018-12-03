@@ -30,7 +30,7 @@ I thought for a demo and a simple application like this an EC2 instance would be
 
 ### Deployment Plan
 
-Please refer to this page for an exhaustive instructions:
+Please refer to this page for exhaustive instructions:
 https://docs.aws.amazon.com/opsworks/latest/userguide/other-services-cp-chef12.html
 
 ```
