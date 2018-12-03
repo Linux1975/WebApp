@@ -1,10 +1,11 @@
 #-- Install the basic software: Apache will serve the webstatic html page.
-# We assume that we use Amazon Linux AMI in our stack.
-# We will use the static code provided as a blueprint so every time we spin up a new instance in OpsWorks ,
+# We assume that we use Amazon Linux in our stack.
+# We will use the static code provided as a "blueprint" , so every time we spin up a new instance in OpsWorks:
 # the starting point will be that code.
-# We also include the binary files example-webapp-linux , example-webapp-osx
+# We also include the binary files example-webapp-linux , example-webapp-osx harcoded in our cookbook.
 #
 #
+
 bash 'setup-apache-yum' do
     user 'root'
     ignore_failure false

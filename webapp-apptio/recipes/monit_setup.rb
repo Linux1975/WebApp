@@ -1,4 +1,4 @@
-#Install monit to check apache , if there is no Apache PID itewill restart the Process and send a notification to a configured
+#Install monit to check Apache , if there is no Apache PID it ewill restart the Process and send a notification to a configured
 #Slack group
 #
 

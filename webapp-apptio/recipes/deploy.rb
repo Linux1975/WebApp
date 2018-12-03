@@ -10,13 +10,13 @@ package "git" do
   options "--force-yes" if node["platform"] == "ubuntu" && node["platform_version"] == "16.04"
 end
 
-#git gets the source code from the specified repository and branch.
+#git gets the source code from the specified repository and branch if there is a delta
  git app_path do
     repository app["app_source"]["url"]
     revision app["app_source"]["revision"]
   end
 
-#Restart Apache after the deployment
+# Restart Apache after deployment
 
 bash "restart_apache" do
   user 'root'
