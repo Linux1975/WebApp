@@ -25,7 +25,7 @@ Under tab _Layers_ should display healthy status for Elastic Loadbalancer, as we
 
 
 
-### 1. Structure of theCookbook and Cloudformation
+### 1. Structure of the Cookbook and Cloudformation
 
 ```
 Webapp OpsWorks repository
@@ -37,7 +37,8 @@ Webapp OpsWorks repository
     └---recipes             Chef Recipes for provisiong an EC2 instance with Apache ,the blueprint of every instance created
     │                       
     └---templates           Templates for provisiong Apache    
-
+    |
+    └---files               Harcoded binary files
 
 
 ```
