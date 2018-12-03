@@ -38,7 +38,7 @@ Step 1: Create a stack, layer, and an instance in AWS OpsWorks Stacks:
 Note: Clone this repository locally and upload the cloudformation script when we create the OpSWorks stack
 Step 2: Configure your stack and layer to use custom cookbooks:
 Note : For clarity use this git repository instead of an S3 archive , besides use apache_setup.rb and monit_setup.rb recipes for setup , instead deploy.rb for deployment.
-Run the setup recipes under , in OpsWorks , Deployment -->Run Command --> Command select update custom recipies: use apache_setup.rb and monit_setup.rb
+Run the setup recipes under in OpsWorks , Deployment -->Run Command --> Command select setup recipies: use apache_setup.rb and monit_setup.rb
 Step 3: Upload app code to an Amazon S3 bucket
 Note : you must create a bucket first
 Step 4: Add your app to AWS OpsWorks Stacks
