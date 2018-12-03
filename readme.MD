@@ -87,7 +87,7 @@ Webapp OpsWorks repository
     │                       
     └---templates           Templates for provisiong Apache    
     |
-    └---files               Harcdoded binary files
+    └---files               Hardcoded binary files
 
 
 ```
