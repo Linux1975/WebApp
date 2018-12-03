@@ -25,8 +25,14 @@ template "/etc/monit.d/slack" do
     mode 0500
 end
 
-
+# Enable monit service
 service "monit" do
     supports :status => true, :restart => true, :reload => true
     action [ :enable]
+end
+
+#Start monit
+service "monit" do
+    supports :status => true, :restart => true, :reload => true
+    action [ :restart]
 end
