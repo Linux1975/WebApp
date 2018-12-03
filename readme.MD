@@ -27,12 +27,15 @@ Besides I have decided to separate and use an S3 bucket where the developers can
 
 ### Alternatives
 
-I thought for a demo and a simple application like this an EC2 instance would be enough instead of creating a Kubernete cluster.
+I thought for a demo and a simple application like this an EC2 instance would be enough instead of creating a Kubernete cluster ,besides with Opsworks and CodePipeline
+we create a CI/CD stack.
 
 ### Deployment Plan
 
 Please refer to this page for exhaustive instructions:
 https://docs.aws.amazon.com/opsworks/latest/userguide/other-services-cp-chef12.html
+
+How to deploy the whole stack:
 
 ```
 Step 1: Create a stack, layer, and an instance in AWS OpsWorks Stacks:
@@ -68,7 +71,7 @@ So we can create an administrator group in IAM , then create a specific user in 
 ## Testing:
 
 In order to not deploy a buggy code in production we should create a production and a test instance in  OpsWorks ,
-we also need to create a test  CodePipeline.
+we also need to create a test CodePipeline.
 If everything works fine in the test environment we can then apply our code in production.
 
 ### 1. Structure of the Cookbook and Cloudformation script
