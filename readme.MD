@@ -60,7 +60,8 @@ In order to create this stack you must be an Administrator or being part of an a
 So we can create an administrator group in IAM , then create a specific user in order to deploy the whole stack.
 
 ##Testing:
-In order to not deploy a buggy code in production we should create a production and a test instance in  OpsWorks and also a test CodePipeline.
+In order to not deploy a buggy code in production we should create a production and a test instance in  OpsWorks ,
+we also need to create a test  CodePipeline.
 If everything works fine in the test environment we can then apply our code in production.
 
 ### 1. Structure of the Cookbook and Cloudformation script
