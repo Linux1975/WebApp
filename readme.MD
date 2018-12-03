@@ -3,7 +3,7 @@ We will create a Linux EC2 instance with Apache , we will also use a simple CI/C
 Developers have to upload their code to an S3 bucket , if there are any changes those will trigger CodePipeline and deploy them
 to the instance.
 
-###Resources:
+### Resources:
 
 I have used this walkthrough , it creates a simple pipeline that includes one Source and one Deploy stage:
 https://docs.aws.amazon.com/opsworks/latest/userguide/other-services-cp-chef12.html
@@ -13,7 +13,7 @@ https://docs.aws.amazon.com/opsworks/latest/userguide/best-deploy.html
 https://docs.aws.amazon.com/opsworks/latest/userguide/data-bag-json-app.html
 
 
-###Design and Implementation:
+### Design and Implementation:
 
 I have decided to use AWS OpsWorks with Chef 12 and AWS CodePipeline.
 The OpSWorks stack , deployed with CloudFormation , will create a Linux EC2 instance with AutoHealing enabled.
@@ -24,10 +24,12 @@ I will use the static code provided as a "blueprint" , so every time we spin up 
 I also include the binary files example-webapp-linux and example-webapp-osx harcoded in our cookbook , assuming that it will never change.
 Besides I have decided to separate and use an S3 bucket where the developers can upload their new code and use this GitHub repository to deploy our recipes and Cloudformation JSON template.
 
-###Alternatives
-For a demo and a simple application like this I thought an EC2 instance would be enough instead of creating a Kubernete cluster.
+### Alternatives
 
-###Deployment Plan
+I thought for a demo and a simple application like this an EC2 instance would be enough instead of creating a Kubernete cluster.
+
+### Deployment Plan
+
 Please refer to this page for an exhaustive instructions:
 https://docs.aws.amazon.com/opsworks/latest/userguide/other-services-cp-chef12.html
 
@@ -48,18 +50,21 @@ Step 7: Update the app code to see AWS CodePipeline redeploy your app automatica
 ```
 
 
-###Monitoring/Reporting/Alert
+### Monitoring/Reporting/Alert
+
 In OpSWorks there is a monitoring section where we can check: CPU,Memory,Load and processes in each instance.
 It is also possible to integrate Cloudwatch to check logs instance: we can check ,for instance , Apache error log ,access log etc.
 I have also used monit for autohealing : this tool checks if Apache pid exists , if not it will restart it.
 When there is a restart of Apache we will receive a Slack notification in a channel of our choice.
 Note: Remember to configure the appropriate webhook URL in the slack.conf.erb template.
 
-##Configuration:
+## Configuration:
+
 In order to create this stack you must be an Administrator or being part of an administrator group.
 So we can create an administrator group in IAM , then create a specific user in order to deploy the whole stack.
 
-##Testing:
+## Testing:
+
 In order to not deploy a buggy code in production we should create a production and a test instance in  OpsWorks ,
 we also need to create a test  CodePipeline.
 If everything works fine in the test environment we can then apply our code in production.
