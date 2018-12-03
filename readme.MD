@@ -8,6 +8,7 @@ to the instance.
 I have used this walkthrough , it creates a simple pipeline that includes one Source and one Deploy stage:
 https://docs.aws.amazon.com/opsworks/latest/userguide/other-services-cp-chef12.html
 other resources:
+
 https://docs.aws.amazon.com/opsworks/latest/userguide/gettingstarted-intro.html
 https://docs.aws.amazon.com/opsworks/latest/userguide/best-deploy.html
 https://docs.aws.amazon.com/opsworks/latest/userguide/data-bag-json-app.html
