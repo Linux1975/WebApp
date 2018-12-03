@@ -38,6 +38,7 @@ Step 1: Create a stack, layer, and an instance in AWS OpsWorks Stacks:
 Note: Clone this repository locally and upload the cloudformation script when we create the OpSWorks stack
 Step 2: Configure your stack and layer to use custom cookbooks:
 Note : For clarity use this git repository instead of an S3 archive , besides use apache_setup.rb and monit_setup.rb recipes for setup , instead deploy.rb for deployment.
+Run the setup recipes under , in OpsWorks , Deployment -->Run Command --> Command select update custom recipies: use apache_setup.rb and monit_setup.rb
 Step 3: Upload app code to an Amazon S3 bucket
 Note : you must create a bucket first
 Step 4: Add your app to AWS OpsWorks Stacks
@@ -52,7 +53,7 @@ Step 7: Update the app code to see AWS CodePipeline redeploy your app automatica
 
 ### Monitoring/Reporting/Alert
 
-In OpSWorks there is a monitoring section where we can check: CPU,Memory,Load and processes in each instance.
+In OpSWorks there is a monitoring section where we can check: CPU,Memory,Load and processes for Layers.
 It is also possible to integrate Cloudwatch to check logs instance: we can check ,for instance , Apache error log ,access log etc.
 I have also used monit for autohealing : this tool checks if Apache pid exists , if not it will restart it.
 When there is a restart of Apache we will receive a Slack notification in a channel of our choice.
