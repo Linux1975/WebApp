@@ -18,10 +18,10 @@ https://docs.aws.amazon.com/opsworks/latest/userguide/data-bag-json-app.html
 I have decided to use AWS OpsWorks with Chef 12 and AWS CodePipeline.
 The OpSWorks stack , deployed with CloudFormation , will create a Linux EC2 instance with AutoHealing enabled.
 AWS CodePipeline lets you create continuous delivery pipelines that track code changes from sources such as AWS CodeCommit, Amazon Simple Storage Service (Amazon S3), or GitHub.
-I have created new recipes to adapt them to the given code. As I also commented out in the apache recipe I have decided to utilize
+I have created new recipes to adapt them to the given code. As I have also commented out in the apache recipe I have decided to utilize
 this web server that will serve the static html page , ( I have modified the httpd.conf in order to use CSS and Javascripts)
 I will use the static code provided as a "blueprint" , so every time we spin up a new instance in OpsWorks ,the starting point will be that code.
-I also include the binary files example-webapp-linux and example-webapp-osx harcoded in our cookbook , assuming that it will never change.
+I have also included the binary files example-webapp-linux and example-webapp-osx harcoded in our cookbook , assuming that it will never change.
 Besides I have decided to separate and use an S3 bucket where the developers can upload their new code and use this GitHub repository to deploy our recipes and Cloudformation JSON template.
 
 ### Alternatives
