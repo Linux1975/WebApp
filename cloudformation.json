@@ -118,7 +118,7 @@
         "StackId": {
           "Ref": "MyStack"
         },
-        "Name": "WeApp Server",
+        "Name": "WeBApp Server",
 		"Type": "custom",
         "Shortname": "app1",
 		"EnableAutoHealing": "true",

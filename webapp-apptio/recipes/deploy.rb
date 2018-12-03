@@ -1,14 +1,21 @@
-#This recipe runs every time a new version of your application is deployed by AWS CodePipeline
+#This recipe runs every time a new version of the application is deployed by AWS CodePipeline
 
-bash 'deploy ' do
-    user 'root'
-    ignore_failure false
-    code <<-EOH
-    service  httpd stop
-    cd /root
-    wget https://s3-us-west-2.amazonaws.com/techops-interview-webapp/webapp.tar.gz
-    tar xvzf webapp.tar.gz
-    cp -p public/* /var/www/html/
-    chkconfig httpd on
-    EOH
+app = search(:aws_opsworks_app).first
+app_path = "/srv/#{app['shortname']}""
+
+package "git" do
+  options "--force-yes" if node["platform"] == "ubuntu" && node["platform_version"] == "16.04"
+end
+
+git app_path do
+    repository app["app_source"]["url"]
+    revision app["app_source"]["revision"]
+  end
+
+bash "restart_apache" do
+  user 'root'
+  ignore_failure false
+  code <<-EOL
+    service httpd restart
+  EOL
 end
