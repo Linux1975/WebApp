@@ -102,7 +102,7 @@
           ]
         },
 		"ConfigurationManager" : { "Name": "Chef","Version": "12" },
-		"DefaultOs": "Amazon Linux 2017.09",
+		"DefaultOs": "Amazon Linux 2016.03",
         "DefaultInstanceProfileArn": {
           "Fn::GetAtt": [
             "OpsWorksInstanceProfile",
@@ -118,7 +118,7 @@
         "StackId": {
           "Ref": "MyStack"
         },
-        "Name": "WebApp Server",
+        "Name": "Apache App Server",
 		"Type": "custom",
         "Shortname": "app1",
 		"EnableAutoHealing": "true",
@@ -254,7 +254,7 @@
           "Ref": "MyStack"
         },
         "InstanceType": "t2.small",
-        "RootDeviceType": "ebs",
+         "RootDeviceType": "ebs",
         "SshKeyName": {
 		  "Ref": "EC2KeyPairName"
 		}

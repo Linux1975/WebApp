@@ -71,7 +71,7 @@ So we can create an administrator group in IAM , then create a specific user in 
 ## Testing:
 
 In order to not deploy a buggy code in production we should create a production and a test instance in  OpsWorks ,
-we also need to create a test CodePipeline.
+we also need to create a test CodePipeline. We should also create a bucket for testing purpose and use it in Test environment.
 If everything works fine in the test environment we can then apply our code in production.
 
 ### 1. Structure of the Cookbook and Cloudformation script
