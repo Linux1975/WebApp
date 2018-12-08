@@ -73,6 +73,7 @@ end
 #  user 'root'
 #  ignore_failure false
 #  code <<-EOL
+
 #    service httpd start
 #  EOL
 #end
