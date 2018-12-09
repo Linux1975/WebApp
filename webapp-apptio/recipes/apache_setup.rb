@@ -6,18 +6,15 @@
 #
 #
 
-#bash 'setup-apache-yum' do
-#    user 'root'
-#    ignore_failure false
-#    code <<-EOH
-#    yum install httpd -y
-#    chkconfig httpd on
-#    EOH
-#end
+bash 'setup-apache-yum' do
+     user 'root'
+     ignore_failure false
+     code <<-EOH
+     yum install httpd -y
+     chkconfig httpd on
+     EOH
+ end
 
-yum_package "httpd" do
- action :install
-end
 
 # Replace existing configuration files with configuration from the blueprint instance
 # Get the Chef::CookbookVersion for this cookbook
@@ -69,15 +66,11 @@ template "/var/www/html/index.html" do
 end
 
 # Start Apache at the end of the setup
-#bash "start_apache" do
-#  user 'root'
-#  ignore_failure false
-#  code <<-EOL
 
-#    service httpd start
-#  EOL
-#end
-
-service "httpd" do
- action [ :enable, :start ]
+bash "start_apache" do
+  user 'root'
+  ignore_failure false
+  code <<-EOL
+  service httpd start
+  EOL
 end
